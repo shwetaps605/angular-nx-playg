@@ -1,29 +1,32 @@
 {
-  "name": "angular-nx-playg",
+  "name": "shell",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "apps/angular-nx-playg/src",
+  "sourceRoot": "apps/angular-shell/src",
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@nx/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputHashing": "none",
-        "outputPath": "dist/apps/angular-nx-playg",
-        "index": "apps/angular-nx-playg/src/index.html",
-        "main": "apps/angular-nx-playg/src/main.ts",
-        "tsConfig": "apps/angular-nx-playg/tsconfig.app.json",
+        "outputPath": "dist/apps/angular-shell",
+        "index": "apps/angular-shell/src/index.html",
+        "main": "apps/angular-shell/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/angular-shell/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/angular-nx-playg/public"
+            "input": "apps/angular-shell/public"
           }
         ],
-        "styles": ["apps/angular-nx-playg/src/styles.scss"],
-        "scripts": []
+        "styles": ["apps/angular-shell/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/angular-shell/webpack.config.ts"
+        }
       },
       "configurations": {
         "production": {
@@ -39,7 +42,10 @@
               "maximumError": "4kb"
             }
           ],
-          "outputHashing": "none"
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/angular-shell/webpack.prod.config.ts"
+          }
         },
         "development": {
           "buildOptimizer": false,
@@ -53,17 +59,17 @@
       "defaultConfiguration": "production"
     },
     "serve": {
+      "executor": "@nx/angular:module-federation-dev-server",
       "options": {
-        "port": 4250,
-        "publicHost": "http://localhost:4250"
-    },
-      "executor": "@angular-devkit/build-angular:dev-server",
+        "port": 4200,
+        "publicHost": "http://localhost:4200"
+      },
       "configurations": {
         "production": {
-          "buildTarget": "angular-nx-playg:build:production"
+          "buildTarget": "shell:build:production"
         },
         "development": {
-          "buildTarget": "angular-nx-playg:build:development"
+          "buildTarget": "shell:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -71,7 +77,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "angular-nx-playg:build"
+        "buildTarget": "shell:build"
       }
     },
     "lint": {
@@ -81,7 +87,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/angular-nx-playg/jest.config.ts"
+        "jestConfig": "apps/angular-shell/jest.config.ts"
       }
     }
   }
